@@ -9,6 +9,7 @@ public class Spawner : MonoBehaviour
 
     public Transform[] points;
     public GameObject bottle;
+    public GameObject bottle_lvl2;
 
     void Update()
     {
@@ -19,7 +20,11 @@ public class Spawner : MonoBehaviour
 
             cd = maxcd;
             if (maxcd > 0.2f) maxcd -= 0.05f;
-            Instantiate(bottle, points[Random.Range(0, points.Length)].position, bottle.transform.rotation);
+            if (Random.Range(1, Mathf.RoundToInt(maxcd * 10) + 1) == 1)
+            {
+                Instantiate(bottle_lvl2, points[Random.Range(0, points.Length)].position, bottle_lvl2.transform.rotation);
+            }
+            else Instantiate(bottle, points[Random.Range(0, points.Length)].position, bottle.transform.rotation);
         }
     }
 }

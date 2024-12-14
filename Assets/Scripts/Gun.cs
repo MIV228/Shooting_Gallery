@@ -18,6 +18,11 @@ public class Gun : MonoBehaviour
 
     public GameObject shootSound;
 
+    public GameObject impact;
+    public GameObject impactMetal;
+
+    public ParticleSystem particles;
+
     public bool dontAnimate;
     float lastRotation;
 
@@ -47,7 +52,12 @@ public class Gun : MonoBehaviour
 
             if (hit.collider.gameObject.tag == "Enemy")
             {
-                hit.collider.gameObject.GetComponent<Enemy>().Die();
+                hit.collider.gameObject.GetComponent<Enemy>().Hurt();
+                if (hit.collider.gameObject.GetComponent<Enemy>().hp > 0) Instantiate(impactMetal, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else
+            {
+                Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
         GameObject g = Instantiate(shootSound, transform.position, Quaternion.identity);
@@ -59,9 +69,14 @@ public class Gun : MonoBehaviour
         if (cd > 0) cd -= Time.deltaTime;
 
         float triggerValue = attackAction.action.ReadValue<float>();
-        if (triggerValue > 0 && cd <= 0)
+        if (triggerValue > 0)
         {
-            Shoot();
+            if (cd <= 0) Shoot();
+            if (dontAnimate) particles.emissionRate = 20;
+        }
+        else
+        {
+            if (dontAnimate) particles.emissionRate = 0;
         }
     }
 
@@ -84,3 +99,4 @@ public class Gun : MonoBehaviour
         Destroy(trail.gameObject, trail.time);
     }
 }
+

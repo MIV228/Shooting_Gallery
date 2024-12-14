@@ -16,6 +16,9 @@ public class Rifle : MonoBehaviour
 
     public GameObject shootSound;
 
+    public GameObject impact;
+    public GameObject impactMetal;
+
     public void Shoot()
     {
         cd = maxcd;
@@ -30,7 +33,12 @@ public class Rifle : MonoBehaviour
 
             if (hit.collider.gameObject.tag == "Enemy")
             {
-                hit.collider.gameObject.GetComponent<Enemy>().Die();
+                hit.collider.gameObject.GetComponent<Enemy>().Hurt();
+                if (hit.collider.gameObject.GetComponent<Enemy>().hp > 0) Instantiate(impactMetal, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else
+            {
+                Instantiate(impact, hit.point, Quaternion.LookRotation(hit.normal));
             }
         }
         GameObject g = Instantiate(shootSound, transform.position, Quaternion.identity);

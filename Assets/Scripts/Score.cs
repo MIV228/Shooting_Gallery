@@ -38,5 +38,12 @@ public class Score : MonoBehaviour
             animator.Play("levelup");
             sound.Play();
         }
+        else if (score == 100)
+        {
+            weapons[2].SetActive(false);
+            weapons[3].SetActive(true);
+            animator.Play("levelup");
+            sound.Play();
+        }
     }
 }
