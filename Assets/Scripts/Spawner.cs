@@ -11,6 +11,8 @@ public class Spawner : MonoBehaviour
     public GameObject bottle;
     public GameObject bottle_lvl2;
 
+    public bool spawn;
+
     void Update()
     {
         if (cd > 0) cd -= Time.deltaTime;

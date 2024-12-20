@@ -13,6 +13,8 @@ public class Score : MonoBehaviour
     public Animator animator;
     public AudioSource sound;
 
+    public Enemy boss;
+
     private void Start()
     {
         score = 0;
@@ -45,5 +47,18 @@ public class Score : MonoBehaviour
             animator.Play("levelup");
             sound.Play();
         }
+        else if (score == 400)
+        {
+            FindObjectOfType<Spawner>().spawn = false;
+            boss.active = true;
+            boss.animator.Play("entry");
+        }
+    }
+
+    public void Deduct()
+    {
+        score -= 50;
+        if (score < 400) score = 400;
+        text.text = score.ToString();
     }
 }
