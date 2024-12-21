@@ -47,7 +47,7 @@ public class Score : MonoBehaviour
             animator.Play("levelup");
             sound.Play();
         }
-        else if (score == 400)
+        else if (score == 300)
         {
             FindObjectOfType<Spawner>().spawn = false;
             boss.active = true;
@@ -58,7 +58,7 @@ public class Score : MonoBehaviour
     public void Deduct()
     {
         score -= 50;
-        if (score < 400) score = 400;
+        if (score < 300) score = 300;
         text.text = score.ToString();
     }
 }

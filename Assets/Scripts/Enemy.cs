@@ -28,6 +28,18 @@ public class Enemy : MonoBehaviour
     public bool snowman;
     public Enemy parent;
 
+    public AudioSource a1;
+    public AudioSource a2;
+
+    public AudioSource oldmusic;
+    public AudioSource newmusic;
+    public AudioSource bur;
+    public AudioSource crush;
+
+    public Transform wall;
+    public Transform ceil;
+    public ParticleSystem ceil_p;
+    public ParticleSystem bur_p;
 
     private void Start()
     {
@@ -35,6 +47,39 @@ public class Enemy : MonoBehaviour
         {
             animator = GetComponent<Animator>();
             attackCD = 5;
+        }
+    }
+
+    public void StopMusic()
+    {
+        oldmusic.Stop();
+    }
+
+    public void StartMusic()
+    {
+        newmusic.Play();
+    }
+
+    public void WallAnimationBur()
+    {
+        bur_p.Play();
+        bur.Play();
+    }
+
+    public void WallAnimation()
+    {
+        StartCoroutine(WA());
+    }
+
+    IEnumerator WA()
+    {
+        Destroy(ceil.gameObject);
+        ceil_p.Play();
+        crush.Play();
+        while (wall.position.y > 0)
+        {
+            wall.Translate(-Vector3.up * Time.deltaTime * 10);
+            yield return null;
         }
     }
 
@@ -84,10 +129,10 @@ public class Enemy : MonoBehaviour
     {
         hp -= 1;
 
-        if (boss)
+        if (boss && nextAttack != -1)
         {
             FindObjectOfType<Score>().AddScore();
-            if (FindObjectOfType<Score>().score >= 800)
+            if (FindObjectOfType<Score>().score >= 1200)
             {
                 animator.Play("death");
                 nextAttack = -1;
@@ -130,8 +175,16 @@ public class Enemy : MonoBehaviour
                 }
                 attackCD = 5;
 
-                if (nextAttack == 1) animator.SetTrigger("shoot");
-                else animator.SetTrigger("spawn");
+                if (nextAttack == 1)
+                {
+                    animator.SetTrigger("shoot");
+                    a1.Play();
+                }
+                else
+                {
+                    animator.SetTrigger("spawn");
+                    a2.Play();
+                }
             }
         }
         else if (snowman)
